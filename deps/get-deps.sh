@@ -15,6 +15,7 @@ case "$(uname)" in
     tar -xzf mklml_mac_2019.0.1.20181227.tgz
     rm -f mklml_mac_2019.0.1.20181227.tgz
     rm -f mklml_mac_2019.0.1.20181227.tgz.1
+    rm -rf mklml
     mv mklml_mac_2019.0.1.20181227 mklml
     ;;
   "Linux")
@@ -30,11 +31,11 @@ case "$(uname)" in
     tar -xzf mklml_lnx_2019.0.1.20181227.tgz
     rm -f mklml_lnx_2019.0.1.20181227.tgz
     rm -f mklml_lnx_2019.0.1.20181227.tgz.1
+    rm -rf mklml
     mv mklml_lnx_2019.0.1.20181227 mklml
     ln -s libmklml_intel.so mklml/lib/libmklml.so
     ;;
 esac
-
 
 # Following codes are copied from pytorch/tools/run-clang-tidy-in-ci.sh.
 # Generate ATen files.
@@ -53,6 +54,15 @@ python aten/src/ATen/gen.py \
   aten/src/ATen/nn.yaml \
   aten/src/ATen/native/native_functions.yaml
 
-sed -i '' -e "s/ name: n$/ name: 'n'/g" -e "s/ name: N$/ name: 'N'/g" build/aten/src/ATen/Declarations.yaml
+# Sanitize "name: n" fields to be strings rather than booleans in Declarations.yaml
+
+case "$(uname)" in
+  "Darwin")
+    sed -i '' -e "s/ name: n$/ name: 'n'/g" -e "s/ name: N$/ name: 'N'/g" build/aten/src/ATen/Declarations.yaml
+    ;;
+  "Linux")
+    sed -i -e "s/ name: n$/ name: 'n'/g" -e "s/ name: N$/ name: 'N'/g" build/aten/src/ATen/Declarations.yaml
+    ;;
+esac
 
 popd
