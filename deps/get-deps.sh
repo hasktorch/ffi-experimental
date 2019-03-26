@@ -6,8 +6,6 @@
 
 set -eu
 
-USE_BINARY_FOR_CI="$1"
-
 case "$(uname)" in
   "Darwin")
     wget https://download.pytorch.org/libtorch/cpu/libtorch-macos-1.0.0.zip
@@ -20,6 +18,7 @@ case "$(uname)" in
     mv mklml_mac_2019.0.1.20181227 mklml
     ;;
   "Linux")
+    USE_BINARY_FOR_CI="$1"
     if [ -z "$USE_BINARY_FOR_CI" ] ; then
       wget https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip
     else
@@ -54,6 +53,6 @@ python aten/src/ATen/gen.py \
   aten/src/ATen/nn.yaml \
   aten/src/ATen/native/native_functions.yaml
 
-sed -i -e "s/ name: n$/ name: 'n'/g" -e "s/ name: N$/ name: 'N'/g" build/aten/src/ATen/Declarations.yaml
+sed -i '' -e "s/ name: n$/ name: 'n'/g" -e "s/ name: N$/ name: 'N'/g" build/aten/src/ATen/Declarations.yaml
 
 popd
