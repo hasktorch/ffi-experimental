@@ -1,4 +1,7 @@
-# Hasktorch 0.2 Libtorch FFI
+# (ARCHIVED) Hasktorch 0.2 Libtorch FFI
+
+__*This repository contains all of the work leading up to Haskell support of PyTorch's C++ API (part of PyTorch's 1.0
+release). It is now merged into [hasktorch](https://github.com/hasktorch/hasktorch), where development on this work continues.*__
 
 Work on ffi bindings into the c++ libtorch library in preparation for 0.2 which targets the pytorch's post 1.0libtorch backend.
 
